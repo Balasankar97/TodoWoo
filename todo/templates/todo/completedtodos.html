@@ -1,0 +1,31 @@
+{% extends 'todo/base.html' %}
+{% csrf_token %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <h1>Completed Todos</h1>
+        </div>
+</div>
+<div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="list-group">
+                {% for todo in todos %}
+                  <a href = "{% url 'todoview' todo.id %}" class="list-group-item list-group-item-action
+                    {% if todo.important %}
+                      list-group-item-danger"><b>{{ todo.title }}</b>
+                    {% else %}
+                      list-group-item-success">{{ todo.title }}
+                    {% endif %}
+                    {% if todo.memo and todo.important %}
+                      {% for memo in todo.memo.splitlines %}
+                        - <b>{{ memo }}</b>
+                      {% endfor %}
+                    {% else %}
+                      {% for memo in todo.memo.splitlines %}
+                        - {{ memo }}
+                      {% endfor %}
+                    {% endif %}
+                    {{ todo.datecompleted|date:'M j Y h:i A' }}
+                  </a>
+                {% endfor %}
+{% endblock %}
